@@ -14,14 +14,21 @@ fi
 if [ -z "$PORT" ]; then
     PORT='6379'
 fi
+if [ -z "$CHECK_TIMEOUT" ]; then
+    CHECK_TIMEOUT='3s'
+fi
+if [ -z "$CONNECT_TIMEOUT" ]; then
+    CONNECT_TIMEOUT='3s'
+fi
 
 echo 'listen master'                                                >> /var/lib/haproxy/haproxy.cfg
 echo '    mode tcp'                                                 >> /var/lib/haproxy/haproxy.cfg
 echo "    bind $HOST:$PORT"                                         >> /var/lib/haproxy/haproxy.cfg
 echo '    maxconn 20000'                                            >> /var/lib/haproxy/haproxy.cfg
-echo '    timeout connect 3s'                                       >> /var/lib/haproxy/haproxy.cfg
-echo '    timeout client  1m'                                       >> /var/lib/haproxy/haproxy.cfg
-echo '    timeout server  1m'                                       >> /var/lib/haproxy/haproxy.cfg
+echo "    timeout check   $CHECK_TIMEOUT"                           >> /var/lib/haproxy/haproxy.cfg
+echo "    timeout connect $CONNECT_TIMEOUT"                         >> /var/lib/haproxy/haproxy.cfg
+echo "    timeout server  $CONNECT_TIMEOUT"                         >> /var/lib/haproxy/haproxy.cfg
+echo "    timeout client  $CONNECT_TIMEOUT"                         >> /var/lib/haproxy/haproxy.cfg
 echo ''                                                             >> /var/lib/haproxy/haproxy.cfg
 echo '    retries 3'                                                >> /var/lib/haproxy/haproxy.cfg
 echo '    option redispatch'                                        >> /var/lib/haproxy/haproxy.cfg
