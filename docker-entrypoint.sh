@@ -34,14 +34,14 @@ echo '    retries 3'                                                >> /var/lib/
 echo '    option redispatch'                                        >> /var/lib/haproxy/haproxy.cfg
 echo '    option tcp-check'                                         >> /var/lib/haproxy/haproxy.cfg
 if [ -n "$REDIS_PASSWORD" ]; then
-echo "    tcp-check send auth\ $REDIS_USER\ $REDIS_PASSWORD\r\n"    >> /var/lib/haproxy/haproxy.cfg
+echo "    tcp-check send auth\ $REDIS_USER\ $REDIS_PASSWORD"'\\r\\n'>> /var/lib/haproxy/haproxy.cfg
 echo "    tcp-check expect string +OK"                              >> /var/lib/haproxy/haproxy.cfg
 fi
-echo '    tcp-check send PING\r\n'                                  >> /var/lib/haproxy/haproxy.cfg
+echo '    tcp-check send PING''\\r\\n'                              >> /var/lib/haproxy/haproxy.cfg
 echo '    tcp-check expect string +PONG'                            >> /var/lib/haproxy/haproxy.cfg
-echo '    tcp-check send INFO\ REPLICATION\r\n'                     >> /var/lib/haproxy/haproxy.cfg
+echo '    tcp-check send INFO\ REPLICATION''\\r\\n'                 >> /var/lib/haproxy/haproxy.cfg
 echo '    tcp-check expect string role:master'                      >> /var/lib/haproxy/haproxy.cfg
-echo '    tcp-check send QUIT\r\n'                                  >> /var/lib/haproxy/haproxy.cfg
+echo '    tcp-check send QUIT''\\r\\n'                              >> /var/lib/haproxy/haproxy.cfg
 echo '    tcp-check expect string +OK'                              >> /var/lib/haproxy/haproxy.cfg
 echo -n $REDIS_SERVERS | sed 's/,/\n/g' | xargs -i \
 echo "    server {} {} check inter 1s"                              >> /var/lib/haproxy/haproxy.cfg
