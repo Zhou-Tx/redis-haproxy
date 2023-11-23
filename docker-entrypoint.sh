@@ -18,10 +18,10 @@ if [ -z "$CHECK_TIMEOUT" ]; then
     CHECK_TIMEOUT='3s'
 fi
 if [ -z "$CONNECT_TIMEOUT" ]; then
-    CONNECT_TIMEOUT='3s'
+    CONNECT_TIMEOUT='10s'
 fi
 
-echo 'listen master'                                                >> /var/lib/haproxy/haproxy.cfg
+echo 'listen master'                                                 > /var/lib/haproxy/haproxy.cfg
 echo '    mode tcp'                                                 >> /var/lib/haproxy/haproxy.cfg
 echo "    bind $HOST:$PORT"                                         >> /var/lib/haproxy/haproxy.cfg
 echo '    maxconn 20000'                                            >> /var/lib/haproxy/haproxy.cfg
